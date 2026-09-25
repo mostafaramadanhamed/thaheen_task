@@ -8,6 +8,7 @@ import 'core/localization/localization_cubit.dart';
 import 'core/theme/theme_cubit.dart';
 import 'data/local/course_local_data_source.dart';
 import 'data/local/language_local_data_source.dart';
+import 'data/local/playback_speed_local_data_source.dart';
 import 'data/local/progress_local_data_source.dart';
 import 'data/local/theme_local_data_source.dart';
 import 'data/repositories/course_repository.dart';
@@ -30,6 +31,7 @@ Future<void> main() async {
         LanguageLocalDataSource(preferences),
       ),
       themeCubit: ThemeCubit(ThemeLocalDataSource(preferences)),
+      playbackSpeedDataSource: PlaybackSpeedLocalDataSource(preferences),
     ),
   );
 }

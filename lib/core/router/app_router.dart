@@ -64,6 +64,7 @@ abstract final class AppRouter {
                         lessonId: state.pathParameters[RouteParams.lessonId]!,
                         courseRepository: context.read(),
                         progressRepository: context.read(),
+                        playbackSpeedDataSource: context.read(),
                       )..initialize(),
                       child: const LessonPlayerScreen(),
                     ),

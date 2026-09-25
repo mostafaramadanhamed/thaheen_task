@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../core/constants/player_constants.dart';
+import '../../../data/local/playback_speed_local_data_source.dart';
 import '../../../data/repositories/course_repository.dart';
 import '../../../data/repositories/progress_repository.dart';
 import '../../../domain/entities/course.dart';
@@ -22,12 +23,14 @@ class LessonPlayerCubit extends Cubit<LessonPlayerState> {
     required this.lessonId,
     required this._courseRepository,
     required this._progressRepository,
+    required this._playbackSpeedDataSource,
   }) : super(const LessonPlayerInitial());
 
   final String courseId;
   final String lessonId;
   final CourseRepository _courseRepository;
   final ProgressRepository _progressRepository;
+  final PlaybackSpeedLocalDataSource _playbackSpeedDataSource;
 
   VideoPlayerController? _controller;
   Course? _course;
@@ -111,8 +114,22 @@ class LessonPlayerCubit extends Cubit<LessonPlayerState> {
     await seekTo(controller.value.position + offset);
   }
 
+  /// Applies [speed] and remembers it for the next lessons.
   Future<void> setPlaybackSpeed(double speed) async {
-    await _readyController?.setPlaybackSpeed(speed);
+    final controller = _readyController;
+    if (controller == null) return;
+
+    await controller.setPlaybackSpeed(speed);
+    try {
+      await _playbackSpeedDataSource.writeSpeed(speed);
+    } on Exception catch (error, stackTrace) {
+      log(
+        'Failed to persist playback speed',
+        name: 'LessonPlayer',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   Future<void> _initializeVideo(Lesson lesson) async {
@@ -146,6 +163,7 @@ class LessonPlayerCubit extends Cubit<LessonPlayerState> {
     _isCompleted = saved.completed;
     _wasPlaying = false;
     await _restorePosition(controller, saved);
+    await controller.setPlaybackSpeed(_playbackSpeedDataSource.readSpeed());
     if (isClosed) return;
 
     controller.addListener(_onVideoUpdate);

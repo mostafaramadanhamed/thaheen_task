@@ -1,6 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thaheen_task/core/constants/storage_keys.dart';
 import 'package:thaheen_task/data/local/course_local_data_source.dart';
+import 'package:thaheen_task/data/local/playback_speed_local_data_source.dart';
 import 'package:thaheen_task/data/repositories/course_repository.dart';
 import 'package:thaheen_task/data/repositories/progress_repository.dart';
 import 'package:thaheen_task/domain/entities/lesson_progress.dart';
@@ -17,11 +20,13 @@ void main() {
   late FakeVideoPlayerPlatform platform;
   late ProgressRepository progressRepository;
   late CourseRepository courseRepository;
+  late SharedPreferences preferences;
 
   setUp(() async {
     platform = FakeVideoPlayerPlatform();
     VideoPlayerPlatform.instance = platform;
     progressRepository = await createProgressRepository();
+    preferences = await SharedPreferences.getInstance();
     courseRepository = CourseRepository(CourseLocalDataSource(rootBundle));
   });
 
@@ -30,6 +35,7 @@ void main() {
     lessonId: lessonId,
     courseRepository: courseRepository,
     progressRepository: progressRepository,
+    playbackSpeedDataSource: PlaybackSpeedLocalDataSource(preferences),
   );
 
   Future<void> complete(String lessonId) => progressRepository.saveProgress(
@@ -169,13 +175,34 @@ void main() {
     expect(platform.calls, contains('dispose'));
   });
 
-  test('changes playback speed', () async {
+  test('changing playback speed applies and remembers it', () async {
     final cubit = createCubit('anatomy_l1');
     await cubit.initialize();
 
     await cubit.setPlaybackSpeed(1.5);
 
     expect((cubit.state as LessonPlayerReady).playbackSpeed, 1.5);
+    expect(preferences.getDouble(StorageKeys.playbackSpeed), 1.5);
+    await cubit.close();
+  });
+
+  test('opens every lesson at the last chosen speed', () async {
+    await preferences.setDouble(StorageKeys.playbackSpeed, 1.25);
+    final cubit = createCubit('anatomy_l1');
+
+    await cubit.initialize();
+
+    expect((cubit.state as LessonPlayerReady).playbackSpeed, 1.25);
+    await cubit.close();
+  });
+
+  test('ignores an unsupported saved speed', () async {
+    await preferences.setDouble(StorageKeys.playbackSpeed, 3.0);
+    final cubit = createCubit('anatomy_l1');
+
+    await cubit.initialize();
+
+    expect((cubit.state as LessonPlayerReady).playbackSpeed, 1.0);
     await cubit.close();
   });
 }
