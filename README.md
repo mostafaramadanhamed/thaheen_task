@@ -166,7 +166,7 @@ Changes from the suggested shape, and why:
 
 ## Tests
 
-`flutter test` runs **94 tests**.
+`flutter test` runs **95 tests**.
 
 **Required unit tests** (`test/domain/`)
 - `completion_rule_test.dart` — 89% → false; 90%, 95%, 100% → true; zero and negative durations are safe.
