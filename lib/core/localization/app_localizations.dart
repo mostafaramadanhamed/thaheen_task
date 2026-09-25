@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../constants/app_constants.dart';
+import '../constants/learning_constants.dart';
 
 /// Centralized UI strings for Arabic and English.
 ///
@@ -89,6 +90,49 @@ class AppLocalizations {
     ar: 'أكملت $completed من $total',
     en: '$completed of $total completed',
   );
+
+  // Lesson player
+  String get nextLesson => _pick(ar: 'الدرس التالي', en: 'Next lesson');
+  String get backToCourse =>
+      _pick(ar: 'العودة إلى الدورة', en: 'Back to course');
+  String get lessonCompletedMessage =>
+      _pick(ar: 'أحسنت! اكتمل الدرس', en: 'Well done! Lesson completed');
+  String get courseCompletedTitle => _pick(
+    ar: 'أحسنت! أكملت جميع دروس هذه الدورة',
+    en: 'Great job! You completed every lesson in this course',
+  );
+  String get lessonNotFoundTitle =>
+      _pick(ar: 'الدرس غير موجود', en: 'Lesson not found');
+  String get lessonLockedTitle =>
+      _pick(ar: 'هذا الدرس مقفل', en: 'This lesson is locked');
+  String get lessonLockedMessage => _pick(
+    ar: 'أكمل الدرس السابق أولًا لفتح هذا الدرس.',
+    en: 'Complete the previous lesson first to unlock this one.',
+  );
+  String get videoErrorTitle =>
+      _pick(ar: 'تعذّر تشغيل الفيديو', en: "Couldn't play this video");
+  String get videoErrorMessage => _pick(
+    ar: 'ملف الفيديو غير متاح أو تالف. حاول مرة أخرى.',
+    en: 'The video file is missing or damaged. Please try again.',
+  );
+  String get play => _pick(ar: 'تشغيل', en: 'Play');
+  String get pause => _pick(ar: 'إيقاف مؤقت', en: 'Pause');
+  String get rewind => _pick(ar: 'رجوع 10 ثوانٍ', en: 'Back 10 seconds');
+  String get fastForward =>
+      _pick(ar: 'تقديم 10 ثوانٍ', en: 'Forward 10 seconds');
+  String get playbackSpeed => _pick(ar: 'سرعة التشغيل', en: 'Playback speed');
+  String get enterFullscreen => _pick(ar: 'ملء الشاشة', en: 'Fullscreen');
+  String get exitFullscreen =>
+      _pick(ar: 'الخروج من ملء الشاشة', en: 'Exit fullscreen');
+
+  String get completeToUnlockNext {
+    final percent = (LearningConstants.completionThreshold * 100).round();
+    final isolatedPercent = '$_ltrIsolate$percent%$_popIsolate';
+    return _pick(
+      ar: 'شاهد $isolatedPercent من الدرس لفتح الدرس التالي.',
+      en: 'Watch $percent% of this lesson to unlock the next one.',
+    );
+  }
 
   String percentComplete(double progress) {
     final percent = (progress * 100).round();
