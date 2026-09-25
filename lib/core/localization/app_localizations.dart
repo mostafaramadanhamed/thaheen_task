@@ -138,6 +138,14 @@ class AppLocalizations {
   String get exitFullscreen =>
       _pick(ar: 'الخروج من ملء الشاشة', en: 'Exit fullscreen');
 
+  String get myNotes => _pick(ar: 'ملاحظاتي', en: 'My notes');
+  String get notesHint => _pick(
+    ar: 'اكتب ملاحظاتك عن هذا الدرس…',
+    en: 'Write your notes about this lesson…',
+  );
+  String get noteSaving => _pick(ar: 'جارٍ الحفظ…', en: 'Saving…');
+  String get noteSaved => _pick(ar: 'تم الحفظ', en: 'Saved');
+
   String get completeToUnlockNext {
     final percent = (LearningConstants.completionThreshold * 100).round();
     final isolatedPercent = '$_ltrIsolate$percent%$_popIsolate';

@@ -6,6 +6,7 @@ import '../../features/course_details/cubit/course_details_cubit.dart';
 import '../../features/course_details/screens/course_details_screen.dart';
 import '../../features/courses/cubit/courses_cubit.dart';
 import '../../features/courses/screens/courses_screen.dart';
+import '../../features/lesson_player/cubit/lesson_notes_cubit.dart';
 import '../../features/lesson_player/cubit/lesson_player_cubit.dart';
 import '../../features/lesson_player/screens/lesson_player_screen.dart';
 import '../extensions/context_extensions.dart';
@@ -58,14 +59,27 @@ abstract final class AppRouter {
                   name: RouteNames.lessonPlayer,
                   pageBuilder: (context, state) => _page(
                     state,
-                    BlocProvider(
-                      create: (context) => LessonPlayerCubit(
-                        courseId: state.pathParameters[RouteParams.courseId]!,
-                        lessonId: state.pathParameters[RouteParams.lessonId]!,
-                        courseRepository: context.read(),
-                        progressRepository: context.read(),
-                        playbackSpeedDataSource: context.read(),
-                      )..initialize(),
+                    MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => LessonPlayerCubit(
+                            courseId:
+                                state.pathParameters[RouteParams.courseId]!,
+                            lessonId:
+                                state.pathParameters[RouteParams.lessonId]!,
+                            courseRepository: context.read(),
+                            progressRepository: context.read(),
+                            playbackSpeedDataSource: context.read(),
+                          )..initialize(),
+                        ),
+                        BlocProvider(
+                          create: (context) => LessonNotesCubit(
+                            lessonId:
+                                state.pathParameters[RouteParams.lessonId]!,
+                            notesRepository: context.read(),
+                          ),
+                        ),
+                      ],
                       child: const LessonPlayerScreen(),
                     ),
                   ),
