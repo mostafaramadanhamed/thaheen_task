@@ -1,0 +1,135 @@
+{
+  "courses": [
+    {
+      "id": "anatomy",
+      "title": { "ar": "أساسيات علم التشريح", "en": "Anatomy Fundamentals" },
+      "description": {
+        "ar": "مقدمة مبسطة إلى بنية جسم الإنسان وأجهزته الرئيسية.",
+        "en": "A simple introduction to the structure of the human body and its main systems."
+      },
+      "instructor": { "ar": "د. سارة المالكي", "en": "Dr. Sara Almalki" },
+      "thumbnail": "assets/images/course_anatomy.png",
+      "sections": [
+        {
+          "id": "anatomy_s1",
+          "title": { "ar": "مقدمة في التشريح", "en": "Introduction to Anatomy" },
+          "lessons": [
+            {
+              "id": "anatomy_l1",
+              "title": { "ar": "ما هو علم التشريح؟", "en": "What Is Anatomy?" },
+              "durationSeconds": 10,
+              "videoPath": "assets/videos/lesson_1.mp4"
+            },
+            {
+              "id": "anatomy_l2",
+              "title": { "ar": "المصطلحات التشريحية", "en": "Anatomical Terminology" },
+              "durationSeconds": 10,
+              "videoPath": "assets/videos/lesson_2.mp4"
+            }
+          ]
+        },
+        {
+          "id": "anatomy_s2",
+          "title": { "ar": "الجهاز الهيكلي", "en": "The Skeletal System" },
+          "lessons": [
+            {
+              "id": "anatomy_l3",
+              "title": { "ar": "العظام ووظائفها", "en": "Bones and Their Functions" },
+              "durationSeconds": 8,
+              "videoPath": "assets/videos/lesson_3.mp4"
+            },
+            {
+              "id": "anatomy_l4",
+              "title": { "ar": "المفاصل والحركة", "en": "Joints and Movement" },
+              "durationSeconds": 10,
+              "videoPath": "assets/videos/lesson_1.mp4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pharmacology",
+      "title": { "ar": "مدخل إلى علم الأدوية", "en": "Introduction to Pharmacology" },
+      "description": {
+        "ar": "تعرّف على كيفية عمل الأدوية داخل الجسم وأساسيات الجرعات.",
+        "en": "Learn how drugs work in the body and the basics of dosing."
+      },
+      "instructor": { "ar": "د. خالد العتيبي", "en": "Dr. Khalid Alotaibi" },
+      "thumbnail": "assets/images/course_pharmacology.png",
+      "sections": [
+        {
+          "id": "pharmacology_s1",
+          "title": { "ar": "المبادئ الأساسية", "en": "Core Principles" },
+          "lessons": [
+            {
+              "id": "pharmacology_l1",
+              "title": { "ar": "الحرائك الدوائية", "en": "Pharmacokinetics" },
+              "durationSeconds": 10,
+              "videoPath": "assets/videos/lesson_2.mp4"
+            },
+            {
+              "id": "pharmacology_l2",
+              "title": { "ar": "الديناميكا الدوائية", "en": "Pharmacodynamics" },
+              "durationSeconds": 8,
+              "videoPath": "assets/videos/lesson_3.mp4"
+            }
+          ]
+        },
+        {
+          "id": "pharmacology_s2",
+          "title": { "ar": "السلامة الدوائية", "en": "Drug Safety" },
+          "lessons": [
+            {
+              "id": "pharmacology_l3",
+              "title": { "ar": "الآثار الجانبية والتداخلات", "en": "Side Effects and Interactions" },
+              "durationSeconds": 10,
+              "videoPath": "assets/videos/lesson_1.mp4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "first_aid",
+      "title": { "ar": "الإسعافات الأولية", "en": "First Aid Essentials" },
+      "description": {
+        "ar": "مهارات أساسية للتعامل مع الحالات الطارئة حتى وصول المساعدة.",
+        "en": "Essential skills for handling emergencies until help arrives."
+      },
+      "instructor": { "ar": "أ. نورة القحطاني", "en": "Noura Alqahtani" },
+      "thumbnail": "assets/images/course_first_aid.png",
+      "sections": [
+        {
+          "id": "first_aid_s1",
+          "title": { "ar": "الاستجابة للطوارئ", "en": "Emergency Response" },
+          "lessons": [
+            {
+              "id": "first_aid_l1",
+              "title": { "ar": "تقييم الموقف", "en": "Assessing the Scene" },
+              "durationSeconds": 8,
+              "videoPath": "assets/videos/lesson_3.mp4"
+            },
+            {
+              "id": "first_aid_l2",
+              "title": { "ar": "الإنعاش القلبي الرئوي", "en": "CPR Basics" },
+              "durationSeconds": 10,
+              "videoPath": "assets/videos/lesson_2.mp4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terminology",
+      "title": { "ar": "المصطلحات الطبية", "en": "Medical Terminology" },
+      "description": {
+        "ar": "دروس هذه الدورة قيد الإعداد وستتوفر قريبًا.",
+        "en": "Lessons for this course are being prepared and will be available soon."
+      },
+      "instructor": { "ar": "د. ريم الشهري", "en": "Dr. Reem Alshehri" },
+      "thumbnail": "assets/images/course_terminology.png",
+      "sections": []
+    }
+  ]
+}
