@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'core/constants/app_constants.dart';
-import 'core/theme/app_theme.dart';
+import 'app.dart';
+import 'data/local/course_local_data_source.dart';
+import 'data/local/progress_local_data_source.dart';
+import 'data/repositories/course_repository.dart';
+import 'data/repositories/progress_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const ThaheenApp());
-}
+  final preferences = await SharedPreferences.getInstance();
 
-class ThaheenApp extends StatelessWidget {
-  const ThaheenApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppConstants.appTitle,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      locale: AppConstants.defaultLocale,
-      supportedLocales: AppConstants.supportedLocales,
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      home: const Scaffold(),
-    );
-  }
+  runApp(
+    ThaheenApp(
+      courseRepository: CourseRepository(CourseLocalDataSource(rootBundle)),
+      progressRepository: ProgressRepository(
+        ProgressLocalDataSource(preferences),
+      ),
+    ),
+  );
 }
