@@ -2,6 +2,8 @@
 
 A small, Arabic-first learning app for health-sciences courses, built as a Flutter take-home task. Students browse courses, watch video lessons, and unlock lessons one after another as they complete them. Everything runs **fully offline**: course data and videos are bundled with the app.
 
+🎬 **Demo video:** [Watch on Google Drive](https://drive.google.com/file/d/1JCahzs8IHP_5PpUN_NOluQn7PSSJhjYl/view?usp=sharing)
+
 ## Features
 
 ### Required
