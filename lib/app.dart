@@ -9,6 +9,7 @@ import 'core/localization/localization_cubit.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_cubit.dart';
+import 'data/local/playback_speed_local_data_source.dart';
 import 'data/repositories/course_repository.dart';
 import 'data/repositories/progress_repository.dart';
 
@@ -19,12 +20,14 @@ class ThaheenApp extends StatefulWidget {
     required this.progressRepository,
     required this.localizationCubit,
     required this.themeCubit,
+    required this.playbackSpeedDataSource,
   });
 
   final CourseRepository courseRepository;
   final ProgressRepository progressRepository;
   final LocalizationCubit localizationCubit;
   final ThemeCubit themeCubit;
+  final PlaybackSpeedLocalDataSource playbackSpeedDataSource;
 
   @override
   State<ThaheenApp> createState() => _ThaheenAppState();
@@ -46,6 +49,7 @@ class _ThaheenAppState extends State<ThaheenApp> {
       providers: [
         RepositoryProvider.value(value: widget.courseRepository),
         RepositoryProvider.value(value: widget.progressRepository),
+        RepositoryProvider.value(value: widget.playbackSpeedDataSource),
       ],
       child: MultiBlocProvider(
         providers: [

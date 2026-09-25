@@ -7,6 +7,7 @@ import 'package:thaheen_task/core/localization/localization_cubit.dart';
 import 'package:thaheen_task/core/theme/theme_cubit.dart';
 import 'package:thaheen_task/data/local/course_local_data_source.dart';
 import 'package:thaheen_task/data/local/language_local_data_source.dart';
+import 'package:thaheen_task/data/local/playback_speed_local_data_source.dart';
 import 'package:thaheen_task/data/local/progress_local_data_source.dart';
 import 'package:thaheen_task/data/local/theme_local_data_source.dart';
 import 'package:thaheen_task/data/repositories/course_repository.dart';
@@ -40,6 +41,7 @@ Future<void> launchApp(WidgetTester tester) async {
       ),
       localizationCubit: localizationCubit,
       themeCubit: themeCubit,
+      playbackSpeedDataSource: PlaybackSpeedLocalDataSource(preferences),
     ),
   );
   await pumpUntilLoaded(tester);

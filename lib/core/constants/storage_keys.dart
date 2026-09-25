@@ -7,4 +7,7 @@ abstract final class StorageKeys {
 
   /// Selected theme mode (`light` or `dark`); absent means follow the system.
   static const String themeMode = 'theme_mode';
+
+  /// Last playback speed chosen in the player, applied to every lesson.
+  static const String playbackSpeed = 'playback_speed';
 }
