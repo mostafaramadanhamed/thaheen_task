@@ -44,8 +44,6 @@ final class CoursesLoaded extends CoursesState {
   final Map<String, double> courseProgress;
   final ContinueWatchingItem? continueWatching;
 
-  bool get isSearching => searchQuery.trim().isNotEmpty;
-
   double progressOf(Course course) => courseProgress[course.id] ?? 0;
 
   @override

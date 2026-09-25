@@ -63,22 +63,14 @@ class _CoursesContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final continueWatching = state.continueWatching;
-    final showContinueWatching = continueWatching != null && !state.isSearching;
 
+    // Continue Watching sits above search and stays visible while searching,
+    // so the search field never jumps under the user's finger.
     return CustomScrollView(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       slivers: [
-        SliverPadding(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
-          sliver: SliverToBoxAdapter(
-            child: CourseSearchField(
-              initialQuery: state.searchQuery,
-              onChanged: context.read<CoursesCubit>().search,
-            ),
-          ),
-        ),
-        if (showContinueWatching) ...[
-          _SectionTitle(l10n.continueWatching),
+        if (continueWatching != null) ...[
+          _SectionTitle(l10n.continueWatching, isFirst: true),
           SliverPadding(
             padding: _horizontalPadding,
             sliver: SliverToBoxAdapter(
@@ -92,6 +84,20 @@ class _CoursesContent extends StatelessWidget {
             ),
           ),
         ],
+        SliverPadding(
+          padding: EdgeInsetsDirectional.fromSTEB(
+            16,
+            continueWatching == null ? 8 : 24,
+            16,
+            0,
+          ),
+          sliver: SliverToBoxAdapter(
+            child: CourseSearchField(
+              initialQuery: state.searchQuery,
+              onChanged: context.read<CoursesCubit>().search,
+            ),
+          ),
+        ),
         _SectionTitle(l10n.allCourses),
         if (state.filteredCourses.isEmpty)
           SliverFillRemaining(
@@ -124,14 +130,17 @@ class _CoursesContent extends StatelessWidget {
 }
 
 class _SectionTitle extends StatelessWidget {
-  const _SectionTitle(this.title);
+  const _SectionTitle(this.title, {this.isFirst = false});
 
   final String title;
+
+  /// The first title on the screen needs less space above it.
+  final bool isFirst;
 
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsetsDirectional.fromSTEB(16, 24, 16, 12),
+      padding: EdgeInsetsDirectional.fromSTEB(16, isFirst ? 8 : 24, 16, 12),
       sliver: SliverToBoxAdapter(
         child: Text(title, style: context.textTheme.titleLarge),
       ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thaheen_task/core/constants/storage_keys.dart';
 import 'package:thaheen_task/features/course_details/screens/course_details_screen.dart';
+import 'package:thaheen_task/features/courses/widgets/course_card.dart';
 
 import 'helpers/app_harness.dart';
 import 'helpers/pump_helpers.dart';
@@ -58,6 +60,30 @@ void main() {
     await launchApp(tester);
 
     expect(_brightness(tester), Brightness.dark);
+  });
+
+  testWidgets('Continue Watching sits above search and stays while searching', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      StorageKeys.lessonProgress:
+          '{"anatomy_l1": {"position": 4, "completed": false}}',
+    });
+    await launchApp(tester);
+
+    final cardTop = tester.getTopLeft(find.text('تابع المشاهدة')).dy;
+    final searchTop = tester.getTopLeft(find.byType(TextField)).dy;
+    expect(cardTop, lessThan(searchTop));
+
+    await tester.enterText(find.byType(TextField), 'pharmacology');
+    await tester.pump();
+
+    expect(find.text('تابع المشاهدة'), findsOneWidget);
+    expect(find.widgetWithText(CourseCard, 'مدخل إلى علم الأدوية'), findsOne);
+    expect(
+      find.widgetWithText(CourseCard, 'أساسيات علم التشريح'),
+      findsNothing,
+    );
   });
 
   testWidgets('opens course details and blocks a locked lesson', (
