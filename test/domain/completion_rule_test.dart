@@ -60,4 +60,18 @@ void main() {
       );
     });
   });
+
+  group('watchedFraction', () {
+    test('returns position / duration', () {
+      expect(watchedFraction(positionSeconds: 25, durationSeconds: 100), 0.25);
+    });
+
+    test('is clamped to 1.0', () {
+      expect(watchedFraction(positionSeconds: 120, durationSeconds: 100), 1.0);
+    });
+
+    test('is 0.0 for zero duration', () {
+      expect(watchedFraction(positionSeconds: 10, durationSeconds: 0), 0.0);
+    });
+  });
 }

@@ -1,27 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:thaheen_task/data/local/course_local_data_source.dart';
 import 'package:thaheen_task/data/repositories/course_repository.dart';
 
-class _FakeAssetBundle extends CachingAssetBundle {
-  _FakeAssetBundle(this._content);
-
-  final String? _content;
-
-  @override
-  Future<ByteData> load(String key) => throw UnimplementedError();
-
-  @override
-  Future<String> loadString(String key, {bool cache = true}) async {
-    final content = _content;
-    if (content == null) throw FlutterError('Asset not found: $key');
-    return content;
-  }
-}
+import '../helpers/fake_asset_bundle.dart';
 
 CourseRepository _repositoryWith(String? json) =>
-    CourseRepository(CourseLocalDataSource(_FakeAssetBundle(json)));
+    CourseRepository(CourseLocalDataSource(FakeAssetBundle(json)));
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
