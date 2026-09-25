@@ -28,6 +28,15 @@ class Course extends Equatable {
 
   int get lessonCount => lessons.length;
 
+  /// Returns the lesson after [lessonId] in learning order, or `null` if
+  /// it is the last lesson or does not belong to this course.
+  Lesson? lessonAfter(String lessonId) {
+    final ordered = lessons;
+    final index = ordered.indexWhere((lesson) => lesson.id == lessonId);
+    if (index < 0 || index == ordered.length - 1) return null;
+    return ordered[index + 1];
+  }
+
   @override
   List<Object?> get props => [
     id,

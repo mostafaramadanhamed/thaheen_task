@@ -25,10 +25,11 @@ void main() {
 
   test('persists saved progress across repository instances', () async {
     final repository = await _createRepository();
-    const progress = LessonProgress(
+    final progress = LessonProgress(
       lessonId: 'lesson_1',
       positionSeconds: 42,
       completed: true,
+      lastWatchedAt: DateTime(2026, 9, 25, 10, 30),
     );
 
     await repository.saveProgress(progress);

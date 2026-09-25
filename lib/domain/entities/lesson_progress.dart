@@ -7,22 +7,37 @@ class LessonProgress extends Equatable {
     required this.lessonId,
     this.positionSeconds = 0,
     this.completed = false,
+    this.lastWatchedAt,
   });
 
   final String lessonId;
   final int positionSeconds;
   final bool completed;
 
+  /// When the lesson was last watched; used to pick the most recent
+  /// lesson for Continue Watching.
+  final DateTime? lastWatchedAt;
+
   bool get isStarted => positionSeconds > 0 || completed;
 
-  LessonProgress copyWith({int? positionSeconds, bool? completed}) {
+  LessonProgress copyWith({
+    int? positionSeconds,
+    bool? completed,
+    DateTime? lastWatchedAt,
+  }) {
     return LessonProgress(
       lessonId: lessonId,
       positionSeconds: positionSeconds ?? this.positionSeconds,
       completed: completed ?? this.completed,
+      lastWatchedAt: lastWatchedAt ?? this.lastWatchedAt,
     );
   }
 
   @override
-  List<Object?> get props => [lessonId, positionSeconds, completed];
+  List<Object?> get props => [
+    lessonId,
+    positionSeconds,
+    completed,
+    lastWatchedAt,
+  ];
 }
