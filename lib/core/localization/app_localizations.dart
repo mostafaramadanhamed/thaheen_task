@@ -39,6 +39,12 @@ class AppLocalizations {
   /// Name of the language the user can switch to, in that language.
   String get otherLanguageName => _pick(ar: 'English', en: 'العربية');
 
+  // Theme
+  String get switchToDarkMode =>
+      _pick(ar: 'التبديل إلى الوضع الداكن', en: 'Switch to dark mode');
+  String get switchToLightMode =>
+      _pick(ar: 'التبديل إلى الوضع الفاتح', en: 'Switch to light mode');
+
   // Courses
   String get myCourses => _pick(ar: 'دوراتي', en: 'My Courses');
   String get allCourses => _pick(ar: 'جميع الدورات', en: 'All Courses');

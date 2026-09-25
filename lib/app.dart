@@ -8,6 +8,7 @@ import 'core/localization/localization_cubit.dart';
 import 'core/router/app_router.dart';
 import 'core/router/route_names.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_cubit.dart';
 import 'data/repositories/course_repository.dart';
 import 'data/repositories/progress_repository.dart';
 
@@ -17,11 +18,13 @@ class ThaheenApp extends StatelessWidget {
     required this.courseRepository,
     required this.progressRepository,
     required this.localizationCubit,
+    required this.themeCubit,
   });
 
   final CourseRepository courseRepository;
   final ProgressRepository progressRepository;
   final LocalizationCubit localizationCubit;
+  final ThemeCubit themeCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +33,30 @@ class ThaheenApp extends StatelessWidget {
         RepositoryProvider.value(value: courseRepository),
         RepositoryProvider.value(value: progressRepository),
       ],
-      child: BlocProvider.value(
-        value: localizationCubit,
-        child: BlocBuilder<LocalizationCubit, Locale>(
-          builder: (context, locale) => MaterialApp(
-            title: AppConstants.appTitle,
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            locale: locale,
-            supportedLocales: AppConstants.supportedLocales,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              ...GlobalMaterialLocalizations.delegates,
-            ],
-            initialRoute: RouteNames.courses,
-            onGenerateRoute: AppRouter.onGenerateRoute,
-          ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: localizationCubit),
+          BlocProvider.value(value: themeCubit),
+        ],
+        child: BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, themeMode) =>
+              BlocBuilder<LocalizationCubit, Locale>(
+                builder: (context, locale) => MaterialApp(
+                  title: AppConstants.appTitle,
+                  debugShowCheckedModeBanner: false,
+                  theme: AppTheme.light,
+                  darkTheme: AppTheme.dark,
+                  themeMode: themeMode,
+                  locale: locale,
+                  supportedLocales: AppConstants.supportedLocales,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    ...GlobalMaterialLocalizations.delegates,
+                  ],
+                  initialRoute: RouteNames.courses,
+                  onGenerateRoute: AppRouter.onGenerateRoute,
+                ),
+              ),
         ),
       ),
     );

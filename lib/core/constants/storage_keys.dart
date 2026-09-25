@@ -4,4 +4,7 @@ abstract final class StorageKeys {
 
   /// Selected UI language code (`ar` or `en`).
   static const String languageCode = 'language_code';
+
+  /// Selected theme mode (`light` or `dark`); absent means follow the system.
+  static const String themeMode = 'theme_mode';
 }
