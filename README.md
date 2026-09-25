@@ -216,7 +216,7 @@ Changes from the suggested shape, and why:
 
 ## Time spent
 
-About **3 hours** of planning, research and coding.
+About **4 hours** of planning, research and coding.
 
 ## Credits
 
