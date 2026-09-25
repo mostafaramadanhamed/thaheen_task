@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thaheen_task/core/constants/storage_keys.dart';
 import 'package:thaheen_task/data/local/progress_local_data_source.dart';
+import 'package:thaheen_task/data/models/lesson_progress_model.dart';
 import 'package:thaheen_task/data/repositories/progress_repository.dart';
 import 'package:thaheen_task/domain/entities/lesson_progress.dart';
 
@@ -66,4 +67,22 @@ void main() {
 
     expect(repository.getAll().keys, ['lesson_1']);
   });
+
+  test('keeps progress in memory when persisting fails', () async {
+    final repository = ProgressRepository(_FailingProgressDataSource());
+    const progress = LessonProgress(lessonId: 'lesson_1', positionSeconds: 7);
+
+    await repository.saveProgress(progress);
+
+    expect(repository.getProgress('lesson_1'), progress);
+  });
+}
+
+class _FailingProgressDataSource implements ProgressLocalDataSource {
+  @override
+  Map<String, LessonProgressModel> readAll() => {};
+
+  @override
+  Future<void> writeAll(Map<String, LessonProgressModel> progress) =>
+      throw Exception('Disk full');
 }
