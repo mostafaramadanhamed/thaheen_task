@@ -124,9 +124,49 @@ There are no queries, relations or large collections, so a database (Hive, Isar,
 - **Images:** `assets/images/*.png` thumbnails.
 - **No network code at all** — no HTTP client, no backend SDK, no remote URLs.
 
+## Data format
+
+`assets/data/courses.json` contains the **2 courses** the brief asks for — *Anatomy Fundamentals* and *Introduction to Pharmacology*, each with 2 sections of 2 lessons — plus a third course, *Medical Terminology*, with **no lessons**. That extra course exists only to demonstrate the "course with no lessons" empty state.
+
+```json
+{
+  "id": "anatomy",
+  "title": { "ar": "أساسيات علم التشريح", "en": "Anatomy Fundamentals" },
+  "description": { "ar": "…", "en": "…" },
+  "instructor": { "ar": "د. سارة المالكي", "en": "Dr. Sara Almalki" },
+  "thumbnail": "assets/images/course_anatomy.png",
+  "sections": [
+    {
+      "id": "anatomy_s1",
+      "title": { "ar": "مقدمة في التشريح", "en": "Introduction to Anatomy" },
+      "lessons": [
+        {
+          "id": "anatomy_l1",
+          "title": { "ar": "ما هو علم التشريح؟", "en": "What Is Anatomy?" },
+          "durationSeconds": 10,
+          "videoPath": "assets/videos/lesson_1.mp4"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Changes from the suggested shape, and why:
+
+| Change | Reason |
+|---|---|
+| `title`, `instructor` (and sections/lessons titles) are `{ "ar", "en" }` objects | Content must follow the Arabic/English switch. One reusable `LocalizedText` model avoids parallel fields like `titleEn`. |
+| New `description` field | The course details screen shows course information, not just a title. |
+| `durationSec` → `durationSeconds` | Unit spelled out, consistent with the rest of the code. |
+| `video` → `videoPath` | Makes it explicit that the value is a bundled asset path. |
+| Lesson ids are unique across the catalog (`anatomy_l1`, not `l1`) | All progress is stored in one map keyed by lesson id; repeated ids across courses would share progress. |
+
+`durationSeconds` is only used for display before a video loads. Completion always uses the real duration reported by the video player.
+
 ## Tests
 
-`flutter test` runs **93 tests**.
+`flutter test` runs **94 tests**.
 
 **Required unit tests** (`test/domain/`)
 - `completion_rule_test.dart` — 89% → false; 90%, 95%, 100% → true; zero and negative durations are safe.
@@ -135,7 +175,7 @@ There are no queries, relations or large collections, so a database (Hive, Isar,
 
 **Additional**
 - Domain: course search (case, Arabic variants, instructor), Continue Watching selection, `Course.lessonAfter`.
-- Data: catalog parsing and error handling, progress persistence, corrupt data and failed writes.
+- Data: catalog parsing and shape (2 courses × 2 sections × 2–3 lessons), error handling, progress persistence, corrupt data and failed writes.
 - Cubits: courses, course details, lesson player (the player runs the real `VideoPlayerController` on a fake video platform), localization, theme.
 - Navigation: deep link to a lesson and its back stack, next lesson replaces the player, unknown course and unknown path.
 - Widget/flow: Arabic RTL start; switching to English LTR and dark mode and keeping both after restart; locked-lesson message; partially watching a lesson → Continue Watching → resume after an app restart; completing a lesson unlocks the next one.
@@ -151,7 +191,7 @@ There are no queries, relations or large collections, so a database (Hive, Isar,
 
 ## Known issues
 
-- Sample videos are very short (7–10 s). They keep the repository small and make 90% completion easy to demo, but leave little room to show resume.
+- Three sample clips are reused across the lessons, and they are very short (7–10 s). They keep the repository small and make 90% completion easy to demo, but leave little room to show resume.
 - The bundle ID / application ID is still Flutter's default (`com.example.thaheen_task`).
 - The Android release build uses the default debug signing config, so the APK is suitable for testing, not store upload.
 - The release APK is ~57 MB because it contains all CPU architectures; `flutter build apk --split-per-abi` produces smaller per-device files.
