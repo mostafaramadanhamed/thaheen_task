@@ -85,36 +85,12 @@
               "title": { "ar": "الآثار الجانبية والتداخلات", "en": "Side Effects and Interactions" },
               "durationSeconds": 10,
               "videoPath": "assets/videos/lesson_1.mp4"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "first_aid",
-      "title": { "ar": "الإسعافات الأولية", "en": "First Aid Essentials" },
-      "description": {
-        "ar": "مهارات أساسية للتعامل مع الحالات الطارئة حتى وصول المساعدة.",
-        "en": "Essential skills for handling emergencies until help arrives."
-      },
-      "instructor": { "ar": "أ. نورة القحطاني", "en": "Noura Alqahtani" },
-      "thumbnail": "assets/images/course_first_aid.png",
-      "sections": [
-        {
-          "id": "first_aid_s1",
-          "title": { "ar": "الاستجابة للطوارئ", "en": "Emergency Response" },
-          "lessons": [
-            {
-              "id": "first_aid_l1",
-              "title": { "ar": "تقييم الموقف", "en": "Assessing the Scene" },
-              "durationSeconds": 8,
-              "videoPath": "assets/videos/lesson_3.mp4"
             },
             {
-              "id": "first_aid_l2",
-              "title": { "ar": "الإنعاش القلبي الرئوي", "en": "CPR Basics" },
-              "durationSeconds": 10,
-              "videoPath": "assets/videos/lesson_2.mp4"
+              "id": "pharmacology_l4",
+              "title": { "ar": "حساب الجرعات", "en": "Dose Calculations" },
+              "durationSeconds": 8,
+              "videoPath": "assets/videos/lesson_3.mp4"
             }
           ]
         }

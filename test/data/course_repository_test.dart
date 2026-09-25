@@ -39,6 +39,23 @@ void main() {
     expect(ids.toSet(), hasLength(ids.length));
   });
 
+  test('bundled catalog matches the brief: 2 courses of 2 sections '
+      'with 2-3 lessons, plus one course without lessons', () async {
+    final repository = CourseRepository(CourseLocalDataSource(rootBundle));
+
+    final courses = await repository.getCourses();
+    final withLessons = courses.where((course) => course.lessonCount > 0);
+
+    expect(withLessons, hasLength(2));
+    for (final course in withLessons) {
+      expect(course.sections, hasLength(2));
+      for (final section in course.sections) {
+        expect(section.lessons.length, inInclusiveRange(2, 3));
+      }
+    }
+    expect(courses.where((course) => course.lessonCount == 0), hasLength(1));
+  });
+
   test('returns null for an unknown course id', () async {
     final repository = _repositoryWith('{"courses": []}');
 
