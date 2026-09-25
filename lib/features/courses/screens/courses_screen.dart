@@ -73,7 +73,13 @@ class _CoursesContent extends StatelessWidget {
           SliverPadding(
             padding: _horizontalPadding,
             sliver: SliverToBoxAdapter(
-              child: ContinueWatchingCard(item: continueWatching),
+              child: ContinueWatchingCard(
+                item: continueWatching,
+                onTap: () => context.goToLessonPlayer(
+                  courseId: continueWatching.course.id,
+                  lessonId: continueWatching.lesson.id,
+                ),
+              ),
             ),
           ),
         ],

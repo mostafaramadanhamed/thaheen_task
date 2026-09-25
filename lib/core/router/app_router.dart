@@ -5,8 +5,11 @@ import '../../features/course_details/cubit/course_details_cubit.dart';
 import '../../features/course_details/screens/course_details_screen.dart';
 import '../../features/courses/cubit/courses_cubit.dart';
 import '../../features/courses/screens/courses_screen.dart';
+import '../../features/lesson_player/cubit/lesson_player_cubit.dart';
+import '../../features/lesson_player/screens/lesson_player_screen.dart';
 import '../extensions/context_extensions.dart';
 import '../widgets/app_error_view.dart';
+import 'route_arguments.dart';
 import 'route_names.dart';
 
 abstract final class AppRouter {
@@ -33,6 +36,18 @@ abstract final class AppRouter {
             progressRepository: context.read(),
           )..loadCourse(),
           child: const CourseDetailsScreen(),
+        ),
+      ),
+      RouteNames.lessonPlayer when arguments is LessonPlayerArguments => _page(
+        settings,
+        (context) => BlocProvider(
+          create: (context) => LessonPlayerCubit(
+            courseId: arguments.courseId,
+            lessonId: arguments.lessonId,
+            courseRepository: context.read(),
+            progressRepository: context.read(),
+          )..initialize(),
+          child: const LessonPlayerScreen(),
         ),
       ),
       _ => _page(settings, (context) => const _NotFoundScreen()),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
+import 'core/constants/player_constants.dart';
 import 'data/local/course_local_data_source.dart';
 import 'data/local/progress_local_data_source.dart';
 import 'data/repositories/course_repository.dart';
@@ -10,7 +11,9 @@ import 'data/repositories/progress_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SystemChrome.setPreferredOrientations(
+    PlayerConstants.portraitOrientations,
+  );
   final preferences = await SharedPreferences.getInstance();
 
   runApp(

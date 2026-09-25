@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/extensions/context_extensions.dart';
+import '../../../core/extensions/navigation_extensions.dart';
 import '../../../core/extensions/theme_extensions.dart';
 import '../../../core/widgets/app_empty_view.dart';
 import '../../../core/widgets/app_error_view.dart';
@@ -73,7 +74,7 @@ class _CourseDetailsContent extends StatelessWidget {
         );
       return;
     }
-    // Opening the lesson player is added with the player feature.
+    context.goToLessonPlayer(courseId: state.course.id, lessonId: lesson.id);
   }
 
   @override
