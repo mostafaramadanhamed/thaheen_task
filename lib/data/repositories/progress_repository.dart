@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import '../../domain/entities/lesson_progress.dart';
 import '../local/progress_local_data_source.dart';
@@ -28,15 +29,27 @@ class ProgressRepository {
     return _progress[lessonId] ?? LessonProgress(lessonId: lessonId);
   }
 
+  /// Updates progress in memory and persists it. A failed write is logged
+  /// rather than thrown: the in-memory state stays correct for the session
+  /// and the next successful save stores everything.
   Future<void> saveProgress(LessonProgress progress) async {
     if (_progress[progress.lessonId] == progress) return;
 
     _progress[progress.lessonId] = progress;
     _changes.add(getAll());
-    await _dataSource.writeAll({
-      for (final entry in _progress.entries)
-        entry.key: LessonProgressModel.fromEntity(entry.value),
-    });
+    try {
+      await _dataSource.writeAll({
+        for (final entry in _progress.entries)
+          entry.key: LessonProgressModel.fromEntity(entry.value),
+      });
+    } on Exception catch (error, stackTrace) {
+      log(
+        'Failed to persist lesson progress',
+        name: 'ProgressRepository',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   Future<void> dispose() => _changes.close();
