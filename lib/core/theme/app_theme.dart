@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
+
 abstract final class AppTheme {
   static const Color _seedColor = Color(0xFF0E7C86);
 
@@ -15,6 +17,9 @@ abstract final class AppTheme {
 
     return ThemeData(
       colorScheme: colorScheme,
+      extensions: [
+        brightness == Brightness.dark ? AppColors.dark : AppColors.light,
+      ],
       scaffoldBackgroundColor: colorScheme.surface,
       appBarTheme: AppBarTheme(
         centerTitle: false,

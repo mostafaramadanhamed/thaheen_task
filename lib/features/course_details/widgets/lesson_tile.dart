@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/extensions/context_extensions.dart';
 import '../../../core/extensions/theme_extensions.dart';
 import '../../../core/localization/app_localizations.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/duration_formatter.dart';
 import '../../../domain/entities/lesson.dart';
 import '../../../domain/entities/lesson_status.dart';
@@ -22,7 +23,7 @@ class LessonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLocked = status == LessonStatus.locked;
-    final accentColor = _accentColor(context.colorScheme);
+    final accentColor = _accentColor(context.colorScheme, context.appColors);
     final duration = formatDuration(Duration(seconds: lesson.durationSeconds));
 
     return ListTile(
@@ -68,12 +69,13 @@ class LessonTile extends StatelessWidget {
     LessonStatus.completed => Icons.check_rounded,
   };
 
-  Color _accentColor(ColorScheme colorScheme) => switch (status) {
-    LessonStatus.locked => colorScheme.onSurfaceVariant,
-    LessonStatus.notStarted => colorScheme.primary,
-    LessonStatus.inProgress => colorScheme.tertiary,
-    LessonStatus.completed => Colors.green.shade700,
-  };
+  Color _accentColor(ColorScheme colorScheme, AppColors appColors) =>
+      switch (status) {
+        LessonStatus.locked => colorScheme.onSurfaceVariant,
+        LessonStatus.notStarted => colorScheme.primary,
+        LessonStatus.inProgress => colorScheme.tertiary,
+        LessonStatus.completed => appColors.success,
+      };
 
   String _label(AppLocalizations l10n) => switch (status) {
     LessonStatus.locked => l10n.statusLocked,

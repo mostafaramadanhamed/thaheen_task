@@ -9,6 +9,9 @@ import 'helpers/pump_helpers.dart';
 TextDirection _textDirection(WidgetTester tester) =>
     Directionality.of(tester.element(find.byType(Scaffold).first));
 
+Brightness _brightness(WidgetTester tester) =>
+    Theme.of(tester.element(find.byType(Scaffold).first)).brightness;
+
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
 
@@ -38,6 +41,23 @@ void main() {
 
     expect(find.text('My Courses'), findsOneWidget);
     expect(_textDirection(tester), TextDirection.ltr);
+  });
+
+  testWidgets('switches to dark mode and keeps it after a restart', (
+    tester,
+  ) async {
+    await launchApp(tester);
+    expect(_brightness(tester), Brightness.light);
+
+    await tester.tap(find.byIcon(Icons.dark_mode_rounded));
+    await tester.pumpAndSettle();
+
+    expect(_brightness(tester), Brightness.dark);
+    expect(find.byIcon(Icons.light_mode_rounded), findsOneWidget);
+
+    await launchApp(tester);
+
+    expect(_brightness(tester), Brightness.dark);
   });
 
   testWidgets('opens course details and blocks a locked lesson', (

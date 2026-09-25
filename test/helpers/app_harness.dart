@@ -4,9 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thaheen_task/app.dart';
 import 'package:thaheen_task/core/localization/localization_cubit.dart';
+import 'package:thaheen_task/core/theme/theme_cubit.dart';
 import 'package:thaheen_task/data/local/course_local_data_source.dart';
 import 'package:thaheen_task/data/local/language_local_data_source.dart';
 import 'package:thaheen_task/data/local/progress_local_data_source.dart';
+import 'package:thaheen_task/data/local/theme_local_data_source.dart';
 import 'package:thaheen_task/data/repositories/course_repository.dart';
 import 'package:thaheen_task/data/repositories/progress_repository.dart';
 
@@ -26,6 +28,8 @@ Future<void> launchApp(WidgetTester tester) async {
     LanguageLocalDataSource(preferences),
   );
   addTearDown(localizationCubit.close);
+  final themeCubit = ThemeCubit(ThemeLocalDataSource(preferences));
+  addTearDown(themeCubit.close);
 
   await tester.pumpWidget(
     ThaheenApp(
@@ -35,6 +39,7 @@ Future<void> launchApp(WidgetTester tester) async {
         ProgressLocalDataSource(preferences),
       ),
       localizationCubit: localizationCubit,
+      themeCubit: themeCubit,
     ),
   );
   await pumpUntilLoaded(tester);

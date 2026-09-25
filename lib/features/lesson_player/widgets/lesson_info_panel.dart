@@ -31,6 +31,25 @@ class LessonInfoPanel extends StatelessWidget {
             color: context.colorScheme.onSurfaceVariant,
           ),
         ),
+        if (state.isCompleted) ...[
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Icon(
+                Icons.check_circle_rounded,
+                size: 18,
+                color: context.appColors.success,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                l10n.statusCompleted,
+                style: context.textTheme.labelLarge?.copyWith(
+                  color: context.appColors.success,
+                ),
+              ),
+            ],
+          ),
+        ],
         const SizedBox(height: 24),
         if (state.isCourseFinished)
           _CourseFinishedCard(onBack: Navigator.of(context).pop)
