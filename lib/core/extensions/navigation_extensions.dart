@@ -1,41 +1,29 @@
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
-import '../router/route_arguments.dart';
 import '../router/route_names.dart';
 
-/// Screen-level navigation so widgets never deal with route names directly.
+/// Screen-level navigation so widgets never deal with routes directly.
 extension AppNavigation on BuildContext {
-  void goToCourses() {
-    Navigator.of(this).popUntil(
-      (route) => route.settings.name == RouteNames.courses || route.isFirst,
+  void goToCourses() => goNamed(RouteNames.courses);
+
+  void goToCourseDetails(String courseId) {
+    goNamed(
+      RouteNames.courseDetails,
+      pathParameters: {RouteParams.courseId: courseId},
     );
   }
 
-  Future<void> goToCourseDetails(String courseId) {
-    return Navigator.of(
-      this,
-    ).pushNamed(RouteNames.courseDetails, arguments: courseId);
-  }
-
-  Future<void> goToLessonPlayer({
-    required String courseId,
-    required String lessonId,
-  }) {
-    return Navigator.of(this).pushNamed(
+  /// Opens a lesson on top of its course details. Going to another lesson
+  /// of the same course replaces the current player, so back always
+  /// returns to the course.
+  void goToLessonPlayer({required String courseId, required String lessonId}) {
+    goNamed(
       RouteNames.lessonPlayer,
-      arguments: LessonPlayerArguments(courseId: courseId, lessonId: lessonId),
-    );
-  }
-
-  /// Replaces the current player with another lesson, so going back
-  /// returns to the course instead of the previous lesson.
-  Future<void> replaceWithLessonPlayer({
-    required String courseId,
-    required String lessonId,
-  }) {
-    return Navigator.of(this).pushReplacementNamed(
-      RouteNames.lessonPlayer,
-      arguments: LessonPlayerArguments(courseId: courseId, lessonId: lessonId),
+      pathParameters: {
+        RouteParams.courseId: courseId,
+        RouteParams.lessonId: lessonId,
+      },
     );
   }
 }

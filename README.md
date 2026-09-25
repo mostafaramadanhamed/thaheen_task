@@ -85,7 +85,7 @@ lib/
 - `CourseRepository` parses the bundled catalog once and caches it. Any failure (missing asset, invalid JSON, missing field) becomes a single `CourseLoadException`, with details logged.
 - `ProgressRepository` keeps progress in memory for synchronous reads, persists it to SharedPreferences, and exposes a `changes` stream so screens update live (e.g. finishing a lesson unlocks the next one in the details screen behind the player).
 
-**Navigation:** `AppRouter.onGenerateRoute` with `RouteNames` constants and typed arguments. Widgets navigate through extensions (`context.goToCourseDetails(id)`, `context.goToLessonPlayer(...)`) and never see route strings.
+**Navigation:** [`go_router`](https://pub.dev/packages/go_router) with nested routes — `/` → `/courses/:courseId` → `/courses/:courseId/lessons/:lessonId`. Nesting gives every location a natural back stack (a lesson opened from Continue Watching goes back to its course details, then home), and unknown paths or ids show a friendly not-found screen. Pages are keyed by their actual location so moving to the next lesson creates a fresh player instead of reusing the previous one. Widgets navigate through extensions (`context.goToCourseDetails(id)`, `context.goToLessonPlayer(...)`) and never see route strings.
 
 ## State management
 
@@ -126,7 +126,7 @@ There are no queries, relations or large collections, so a database (Hive, Isar,
 
 ## Tests
 
-`flutter test` runs **89 tests**.
+`flutter test` runs **93 tests**.
 
 **Required unit tests** (`test/domain/`)
 - `completion_rule_test.dart` — 89% → false; 90%, 95%, 100% → true; zero and negative durations are safe.
@@ -137,6 +137,7 @@ There are no queries, relations or large collections, so a database (Hive, Isar,
 - Domain: course search (case, Arabic variants, instructor), Continue Watching selection, `Course.lessonAfter`.
 - Data: catalog parsing and error handling, progress persistence, corrupt data and failed writes.
 - Cubits: courses, course details, lesson player (the player runs the real `VideoPlayerController` on a fake video platform), localization, theme.
+- Navigation: deep link to a lesson and its back stack, next lesson replaces the player, unknown course and unknown path.
 - Widget/flow: Arabic RTL start; switching to English LTR and dark mode and keeping both after restart; locked-lesson message; partially watching a lesson → Continue Watching → resume after an app restart; completing a lesson unlocks the next one.
 
 ## Trade-offs
