@@ -32,6 +32,13 @@ class AppLocalizations {
   String get pageNotFound =>
       _pick(ar: 'الصفحة غير موجودة', en: 'Page not found');
 
+  // Language
+  String get switchLanguage =>
+      _pick(ar: 'التبديل إلى الإنجليزية', en: 'Switch to Arabic');
+
+  /// Name of the language the user can switch to, in that language.
+  String get otherLanguageName => _pick(ar: 'English', en: 'العربية');
+
   // Courses
   String get myCourses => _pick(ar: 'دوراتي', en: 'My Courses');
   String get allCourses => _pick(ar: 'جميع الدورات', en: 'All Courses');
