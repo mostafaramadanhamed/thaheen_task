@@ -1,6 +1,6 @@
 import '../entities/continue_watching_item.dart';
-import '../entities/lesson_progress.dart';
 import '../entities/course.dart';
+import '../entities/lesson_progress.dart';
 
 /// Returns the most recently watched lesson that was started but not
 /// completed (`position > 0 && !completed`), or `null` if there is none.

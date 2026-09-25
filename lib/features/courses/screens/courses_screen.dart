@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/extensions/context_extensions.dart';
+import '../../../core/extensions/navigation_extensions.dart';
+import '../../../core/extensions/theme_extensions.dart';
 import '../../../core/widgets/app_empty_view.dart';
 import '../../../core/widgets/app_error_view.dart';
 import '../../../core/widgets/app_loading_view.dart';
@@ -96,6 +98,7 @@ class _CoursesContent extends StatelessWidget {
                 return CourseCard(
                   course: course,
                   progress: state.progressOf(course),
+                  onTap: () => context.goToCourseDetails(course.id),
                 );
               },
             ),
@@ -115,7 +118,7 @@ class _SectionTitle extends StatelessWidget {
     return SliverPadding(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 24, 16, 12),
       sliver: SliverToBoxAdapter(
-        child: Text(title, style: Theme.of(context).textTheme.titleLarge),
+        child: Text(title, style: context.textTheme.titleLarge),
       ),
     );
   }
