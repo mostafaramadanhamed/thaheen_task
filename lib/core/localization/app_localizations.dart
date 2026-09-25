@@ -61,6 +61,35 @@ class AppLocalizations {
     en: 'No courses match "$query".',
   );
 
+  // Course details
+  String get aboutCourse => _pick(ar: 'عن الدورة', en: 'About this course');
+  String get courseContent => _pick(ar: 'محتوى الدورة', en: 'Course content');
+  String get courseNotFoundTitle =>
+      _pick(ar: 'الدورة غير موجودة', en: 'Course not found');
+  String get courseNotFoundMessage => _pick(
+    ar: 'ربما تمت إزالة هذه الدورة. عد إلى قائمة الدورات.',
+    en: 'This course may have been removed. Go back to the course list.',
+  );
+  String get courseDetailsErrorTitle =>
+      _pick(ar: 'تعذّر تحميل الدورة', en: "Couldn't load this course");
+  String get noLessonsMessage => _pick(
+    ar: 'ستتوفر دروس هذه الدورة قريبًا.',
+    en: 'Lessons for this course will be available soon.',
+  );
+  String get lockedLessonMessage => _pick(
+    ar: 'هذا الدرس مقفل. أكمل الدرس السابق أولًا لفتحه.',
+    en: 'This lesson is locked. Complete the previous lesson first to unlock it.',
+  );
+  String get statusLocked => _pick(ar: 'مقفل', en: 'Locked');
+  String get statusNotStarted => _pick(ar: 'لم يبدأ', en: 'Not started');
+  String get statusInProgress => _pick(ar: 'قيد التقدم', en: 'In progress');
+  String get statusCompleted => _pick(ar: 'مكتمل', en: 'Completed');
+
+  String lessonsCompleted(int completed, int total) => _pick(
+    ar: 'أكملت $completed من $total',
+    en: '$completed of $total completed',
+  );
+
   String percentComplete(double progress) {
     final percent = (progress * 100).round();
     // Isolate the number so "%" stays attached to it inside Arabic text.

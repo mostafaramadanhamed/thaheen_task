@@ -15,7 +15,8 @@ class CourseLocalDataSource {
   ///
   /// Throws if the asset is missing or its content is not valid.
   Future<List<CourseModel>> loadCourses() async {
-    final raw = await _bundle.loadString(AssetPaths.coursesJson);
+    // The repository caches parsed courses, so skip the bundle's own cache.
+    final raw = await _bundle.loadString(AssetPaths.coursesJson, cache: false);
     final decoded = jsonDecode(raw);
     if (decoded is! JsonMap) {
       throw const FormatException('Course catalog root must be an object');

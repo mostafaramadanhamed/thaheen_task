@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../extensions/theme_extensions.dart';
+
 /// Centered icon, title, optional message and optional action.
 /// Shared layout for empty and error states.
 class AppMessageView extends StatelessWidget {
@@ -20,7 +22,6 @@ class AppMessageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final message = this.message;
     final action = this.action;
 
@@ -33,20 +34,20 @@ class AppMessageView extends StatelessWidget {
             Icon(
               icon,
               size: 64,
-              color: iconColor ?? theme.colorScheme.onSurfaceVariant,
+              color: iconColor ?? context.colorScheme.onSurfaceVariant,
             ),
             const SizedBox(height: 16),
             Text(
               title,
-              style: theme.textTheme.titleMedium,
+              style: context.textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
             if (message != null) ...[
               const SizedBox(height: 8),
               Text(
                 message,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: context.colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../extensions/context_extensions.dart';
+import '../extensions/theme_extensions.dart';
 import 'app_message_view.dart';
 
 class AppErrorView extends StatelessWidget {
@@ -21,7 +22,7 @@ class AppErrorView extends StatelessWidget {
 
     return AppMessageView(
       icon: Icons.error_outline_rounded,
-      iconColor: Theme.of(context).colorScheme.error,
+      iconColor: context.colorScheme.error,
       title: title,
       message: message,
       action: onRetry == null

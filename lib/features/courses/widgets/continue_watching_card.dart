@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/extensions/context_extensions.dart';
+import '../../../core/extensions/theme_extensions.dart';
 import '../../../core/widgets/course_thumbnail.dart';
 import '../../../core/widgets/labeled_progress_bar.dart';
 import '../../../domain/entities/continue_watching_item.dart';
@@ -16,15 +17,13 @@ class ContinueWatchingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     final lessonProgress = watchedFraction(
       positionSeconds: item.progress.positionSeconds,
       durationSeconds: item.lesson.durationSeconds,
     );
 
     return Card(
-      color: colorScheme.primaryContainer,
+      color: context.colorScheme.primaryContainer,
       child: InkWell(
         onTap: onTap,
         child: Padding(
@@ -60,8 +59,8 @@ class ContinueWatchingCard extends StatelessWidget {
                   children: [
                     Text(
                       context.localize(item.lesson.title),
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        color: colorScheme.onPrimaryContainer,
+                      style: context.textTheme.titleSmall?.copyWith(
+                        color: context.colorScheme.onPrimaryContainer,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -69,8 +68,8 @@ class ContinueWatchingCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       context.localize(item.course.title),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onPrimaryContainer,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.colorScheme.onPrimaryContainer,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

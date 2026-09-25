@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../extensions/context_extensions.dart';
+import '../extensions/theme_extensions.dart';
 
 /// A rounded progress bar with a "N% complete" label underneath.
 class LabeledProgressBar extends StatelessWidget {
@@ -11,8 +12,6 @@ class LabeledProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,8 +22,8 @@ class LabeledProgressBar extends StatelessWidget {
         const SizedBox(height: 6),
         Text(
           context.l10n.percentComplete(progress),
-          style: theme.textTheme.labelSmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
+          style: context.textTheme.labelSmall?.copyWith(
+            color: context.colorScheme.onSurfaceVariant,
           ),
         ),
       ],

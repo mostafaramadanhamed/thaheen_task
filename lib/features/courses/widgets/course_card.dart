@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/extensions/context_extensions.dart';
+import '../../../core/extensions/theme_extensions.dart';
 import '../../../core/widgets/course_thumbnail.dart';
 import '../../../core/widgets/labeled_progress_bar.dart';
 import '../../../domain/entities/course.dart';
@@ -19,9 +20,8 @@ class CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final mutedStyle = theme.textTheme.bodySmall?.copyWith(
-      color: theme.colorScheme.onSurfaceVariant,
+    final mutedStyle = context.textTheme.bodySmall?.copyWith(
+      color: context.colorScheme.onSurfaceVariant,
     );
     final hasLessons = course.lessonCount > 0;
 
@@ -42,7 +42,7 @@ class CourseCard extends StatelessWidget {
                 children: [
                   Text(
                     context.localize(course.title),
-                    style: theme.textTheme.titleMedium,
+                    style: context.textTheme.titleMedium,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
