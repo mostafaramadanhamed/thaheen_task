@@ -7,6 +7,7 @@ import '../../../core/extensions/theme_extensions.dart';
 import '../../../core/widgets/app_empty_view.dart';
 import '../../../core/widgets/app_error_view.dart';
 import '../../../core/widgets/app_loading_view.dart';
+import '../../../core/widgets/language_switch_button.dart';
 import '../cubit/courses_cubit.dart';
 import '../cubit/courses_state.dart';
 import '../widgets/continue_watching_card.dart';
@@ -21,7 +22,10 @@ class CoursesScreen extends StatelessWidget {
     final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.myCourses)),
+      appBar: AppBar(
+        title: Text(l10n.myCourses),
+        actions: const [LanguageSwitchButton(), SizedBox(width: 8)],
+      ),
       body: BlocBuilder<CoursesCubit, CoursesState>(
         builder: (context, state) => switch (state) {
           CoursesInitial() || CoursesLoading() => const AppLoadingView(),

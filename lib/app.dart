@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/constants/app_constants.dart';
 import 'core/localization/app_localizations.dart';
+import 'core/localization/localization_cubit.dart';
 import 'core/router/app_router.dart';
 import 'core/router/route_names.dart';
 import 'core/theme/app_theme.dart';
@@ -15,10 +16,12 @@ class ThaheenApp extends StatelessWidget {
     super.key,
     required this.courseRepository,
     required this.progressRepository,
+    required this.localizationCubit,
   });
 
   final CourseRepository courseRepository;
   final ProgressRepository progressRepository;
+  final LocalizationCubit localizationCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +30,24 @@ class ThaheenApp extends StatelessWidget {
         RepositoryProvider.value(value: courseRepository),
         RepositoryProvider.value(value: progressRepository),
       ],
-      child: MaterialApp(
-        title: AppConstants.appTitle,
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
-        locale: AppConstants.defaultLocale,
-        supportedLocales: AppConstants.supportedLocales,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          ...GlobalMaterialLocalizations.delegates,
-        ],
-        initialRoute: RouteNames.courses,
-        onGenerateRoute: AppRouter.onGenerateRoute,
+      child: BlocProvider.value(
+        value: localizationCubit,
+        child: BlocBuilder<LocalizationCubit, Locale>(
+          builder: (context, locale) => MaterialApp(
+            title: AppConstants.appTitle,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            locale: locale,
+            supportedLocales: AppConstants.supportedLocales,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              ...GlobalMaterialLocalizations.delegates,
+            ],
+            initialRoute: RouteNames.courses,
+            onGenerateRoute: AppRouter.onGenerateRoute,
+          ),
+        ),
       ),
     );
   }
