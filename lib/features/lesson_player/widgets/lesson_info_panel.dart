@@ -52,11 +52,13 @@ class LessonInfoPanel extends StatelessWidget {
         ],
         const SizedBox(height: 24),
         if (state.isCourseFinished)
-          _CourseFinishedCard(onBack: Navigator.of(context).pop)
+          _CourseFinishedCard(
+            onBack: () => context.goToCourseDetails(state.course.id),
+          )
         else ...[
           NextLessonButton(
             onPressed: state.canGoNext && nextLesson != null
-                ? () => context.replaceWithLessonPlayer(
+                ? () => context.goToLessonPlayer(
                     courseId: state.course.id,
                     lessonId: nextLesson.id,
                   )
