@@ -10,4 +10,7 @@ abstract final class StorageKeys {
 
   /// Last playback speed chosen in the player, applied to every lesson.
   static const String playbackSpeed = 'playback_speed';
+
+  /// Single JSON entry holding every lesson note, keyed by lesson id.
+  static const String lessonNotes = 'lesson_notes';
 }

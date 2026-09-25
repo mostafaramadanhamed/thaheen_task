@@ -105,4 +105,41 @@ void main() {
     await _goBack(tester);
     expect(find.text(_continueWatching), findsNothing);
   });
+
+  testWidgets('lesson note survives leaving the lesson and an app restart', (
+    tester,
+  ) async {
+    const note = 'العظام تحمي الأعضاء الداخلية';
+    await launchApp(tester);
+    await _openLesson(tester, _firstLessonTitle);
+
+    await tester.scrollUntilVisible(
+      find.byType(TextField),
+      200,
+      scrollable: find
+          .descendant(
+            of: find.byType(LessonPlayerScreen),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
+    await tester.enterText(find.byType(TextField), note);
+    await _goBack(tester);
+
+    await launchApp(tester);
+    await _openLesson(tester, _firstLessonTitle);
+    await tester.scrollUntilVisible(
+      find.text(note),
+      200,
+      scrollable: find
+          .descendant(
+            of: find.byType(LessonPlayerScreen),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
+
+    expect(find.text(note), findsOneWidget);
+    await _goBack(tester);
+  });
 }

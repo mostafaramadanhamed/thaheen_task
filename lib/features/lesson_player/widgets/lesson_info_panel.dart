@@ -4,6 +4,7 @@ import '../../../core/extensions/context_extensions.dart';
 import '../../../core/extensions/navigation_extensions.dart';
 import '../../../core/extensions/theme_extensions.dart';
 import '../cubit/lesson_player_state.dart';
+import 'lesson_notes_field.dart';
 import 'next_lesson_button.dart';
 
 /// Lesson details and the Next Lesson action shown under the video.
@@ -86,6 +87,8 @@ class LessonInfoPanel extends StatelessWidget {
             ),
           ],
         ],
+        const SizedBox(height: 32),
+        const LessonNotesField(),
       ],
     );
   }

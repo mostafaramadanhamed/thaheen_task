@@ -29,6 +29,7 @@ A small, Arabic-first learning app for health-sciences courses, built as a Flutt
 - **Search** — Arabic and English titles and instructor names; case-insensitive for English and tolerant of common Arabic spelling variants (أ/إ/آ → ا, ة → ه, ى → ي, diacritics).
 - **Dark mode** — follows the system until the user picks light or dark; the choice is persisted.
 - **Remember last playback speed** — the speed chosen in the player applies to every lesson and survives restarts.
+- **Per-lesson notes** — a free-text note under each lesson in the player, saved automatically while typing and when leaving the lesson.
 - **Widget and flow tests** — in addition to the required unit tests.
 
 ## Running the project
@@ -99,6 +100,7 @@ lib/
 | `LessonPlayerCubit` | Owns the `VideoPlayerController`; playback, resume, remembered speed, 90% detection, throttled persistence, next lesson |
 | `LocalizationCubit` | Current locale, persisted |
 | `ThemeCubit` | Theme mode, persisted |
+| `LessonNotesCubit` | The current lesson's note; saves 600 ms after typing stops and on close |
 
 Why Cubit: the app's state changes come from a handful of direct user actions and a progress stream — there are no complex event pipelines, so Bloc's event classes would add ceremony without benefit. Cubits keep business logic out of widgets, give explicit sealed states (`Loading` / `Loaded` / `Empty` / `Error`) that map cleanly to UI, and are easy to test.
 
@@ -113,6 +115,7 @@ SharedPreferences is enough because the persisted data is tiny and simple:
 | `lesson_progress` | One JSON object: `{ "<lessonId>": { "position": 42, "completed": false, "lastWatchedAt": 1758800000000 } }` |
 | `language_code` | `ar` or `en` |
 | `theme_mode` | `light` or `dark` (absent = follow system) |
+| `lesson_notes` | One JSON object: `{ "<lessonId>": "note text" }` (blank notes are removed) |
 | `playback_speed` | Last chosen speed: `1.0`, `1.25`, `1.5` or `2.0` (anything else falls back to `1.0`) |
 
 There are no queries, relations or large collections, so a database (Hive, Isar, SQLite) would add setup and migration cost with no real benefit. The course catalog is **not** persisted — it always comes from the bundled JSON.
@@ -168,7 +171,7 @@ Changes from the suggested shape, and why:
 
 ## Tests
 
-`flutter test` runs **97 tests**.
+`flutter test` runs **105 tests**.
 
 **Required unit tests** (`test/domain/`)
 - `completion_rule_test.dart` — 89% → false; 90%, 95%, 100% → true; zero and negative durations are safe.
@@ -177,10 +180,10 @@ Changes from the suggested shape, and why:
 
 **Additional**
 - Domain: course search (case, Arabic variants, instructor), Continue Watching selection, `Course.lessonAfter`.
-- Data: catalog parsing and shape (2 courses × 2 sections × 2–3 lessons), error handling, progress persistence, corrupt data and failed writes.
-- Cubits: courses, course details, lesson player (the player runs the real `VideoPlayerController` on a fake video platform), localization, theme.
+- Data: notes persistence; catalog parsing and shape (2 courses × 2 sections × 2–3 lessons), error handling, progress persistence, corrupt data and failed writes.
+- Cubits: courses, course details, lesson player, lesson notes (delayed save, save on close) (the player runs the real `VideoPlayerController` on a fake video platform), localization, theme.
 - Navigation: deep link to a lesson and its back stack, next lesson replaces the player, unknown course and unknown path.
-- Widget/flow: Arabic RTL start; switching to English LTR and dark mode and keeping both after restart; locked-lesson message; partially watching a lesson → Continue Watching → resume after an app restart; completing a lesson unlocks the next one.
+- Widget/flow: Arabic RTL start; switching to English LTR and dark mode and keeping both after restart; locked-lesson message; partially watching a lesson → Continue Watching → resume after an app restart; completing a lesson unlocks the next one; a lesson note survives leaving the lesson and an app restart.
 
 ## Trade-offs
 
@@ -209,6 +212,7 @@ Changes from the suggested shape, and why:
 - CI (analyze, test, build) and proper release signing.
 - Analytics and crash reporting in a real production environment.
 - Richer search and filtering (by progress, category, instructor).
+- Multiple timestamped notes per lesson that jump to that moment in the video.
 
 ## Time spent
 

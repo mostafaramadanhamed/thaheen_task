@@ -13,6 +13,10 @@ abstract final class PlayerConstants {
   static const Duration seekStep = Duration(seconds: 10);
   static const Duration controlsAutoHideDelay = Duration(seconds: 3);
 
+  /// Notes are saved this long after the user stops typing.
+  static const Duration noteSaveDelay = Duration(milliseconds: 600);
+  static const int noteMaxLength = 2000;
+
   static const List<DeviceOrientation> portraitOrientations = [
     DeviceOrientation.portraitUp,
   ];
