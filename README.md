@@ -1,8 +1,14 @@
 # Thaheen — Mini Offline LMS
 
+[![CI](https://github.com/mostafaramadanhamed/thaheen_task/actions/workflows/ci.yml/badge.svg)](https://github.com/mostafaramadanhamed/thaheen_task/actions/workflows/ci.yml)
+
 A small, Arabic-first learning app for health-sciences courses, built as a Flutter take-home task. Students browse courses, watch video lessons, and unlock lessons one after another as they complete them. Everything runs **fully offline**: course data and videos are bundled with the app.
 
 🎬 **Demo video:** [Watch on Google Drive](https://drive.google.com/file/d/1JCahzs8IHP_5PpUN_NOluQn7PSSJhjYl/view?usp=sharing)
+
+| Courses (Arabic) | Course details | Lesson player | English | Dark mode |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="docs/screenshots/courses_ar.png" width="170" alt="Courses screen in Arabic with Continue Watching"> | <img src="docs/screenshots/details_ar.png" width="170" alt="Course details with lesson statuses"> | <img src="docs/screenshots/player_ar.png" width="170" alt="Lesson player with controls and notes"> | <img src="docs/screenshots/courses_en.png" width="170" alt="Courses screen in English"> | <img src="docs/screenshots/details_dark.png" width="170" alt="Course details in dark mode"> |
 
 ## Features
 
@@ -45,6 +51,23 @@ flutter build apk --release # Android release build (see Known issues about sign
 ```
 
 No API keys, backend or network access are needed.
+
+## Try the edge cases
+
+A quick guide for checking the behaviour the brief asks about:
+
+| Scenario | How to see it |
+|---|---|
+| Sequential unlock | Open *Anatomy Fundamentals* and tap lesson 2 — a message explains that lesson 1 must be completed first. |
+| Unlock across sections | Complete Anatomy lessons 1 and 2; lesson 3 in the next section (*The Skeletal System*) unlocks. |
+| 90% completion | The sample clips are 7–10 s, so play a lesson (or seek near the end); a "lesson completed" message appears and **Next lesson** is enabled. |
+| Resume and restart | Play a lesson partway, go back, then fully close the app. On relaunch, **Continue Watching** shows it and resumes at the saved position. |
+| Empty course | Open *Medical Terminology* — it has no lessons. |
+| No search results | Type something like `xyz` in the search field. |
+| Missing video | In `assets/data/courses.json`, point a lesson's `videoPath` to a file that does not exist, then rebuild — the player shows a friendly error with **Try again**. |
+| Corrupt video | Replace one of `assets/videos/*.mp4` with any non-video file (keep the name), then rebuild. |
+| Invalid catalog | Remove a brace from `assets/data/courses.json`, then rebuild — the courses screen shows an error with **Try again**. |
+| English, dark mode | Use the buttons in the top bar of the courses screen; both choices survive a restart. |
 
 ## Architecture
 
@@ -171,7 +194,7 @@ Changes from the suggested shape, and why:
 
 ## Tests
 
-`flutter test` runs **105 tests**.
+`flutter test` runs **105 tests**. GitHub Actions runs formatting checks, `flutter analyze` and `flutter test` on every pull request and on `main`.
 
 **Required unit tests** (`test/domain/`)
 - `completion_rule_test.dart` — 89% → false; 90%, 95%, 100% → true; zero and negative durations are safe.
@@ -184,6 +207,18 @@ Changes from the suggested shape, and why:
 - Cubits: courses, course details, lesson player, lesson notes (delayed save, save on close) (the player runs the real `VideoPlayerController` on a fake video platform), localization, theme.
 - Navigation: deep link to a lesson and its back stack, next lesson replaces the player, unknown course and unknown path.
 - Widget/flow: Arabic RTL start; switching to English LTR and dark mode and keeping both after restart; locked-lesson message; partially watching a lesson → Continue Watching → resume after an app restart; completing a lesson unlocks the next one; a lesson note survives leaving the lesson and an app restart.
+
+## Assumptions
+
+Where the brief left room for interpretation, I chose:
+
+- **Completion is position-based:** reaching 90% of the video counts, including by seeking — the rule as written.
+- **Completed stays completed:** rewatching a completed lesson never locks the lessons after it again.
+- **Course progress counts only completed lessons:** a half-watched lesson does not add to the course percentage.
+- **Continue Watching shows one lesson:** the most recently watched lesson that is started but not completed.
+- **A position saved within the last 2 s restarts the lesson** instead of resuming at the very end.
+- **Media controls stay left-to-right in Arabic** (see Trade-offs); everything else is mirrored.
+- **One note per lesson, one playback speed for the whole app.**
 
 ## Trade-offs
 
@@ -209,7 +244,7 @@ Changes from the suggested shape, and why:
 - Tablet and landscape layouts for the courses and details screens.
 - More robust video error recovery (automatic retry, detecting stalled playback).
 - A caching/sync abstraction if the product moves to network-delivered content and videos.
-- CI (analyze, test, build) and proper release signing.
+- CI release builds (APK/IPA artifacts) and proper release signing.
 - Analytics and crash reporting in a real production environment.
 - Richer search and filtering (by progress, category, instructor).
 - Multiple timestamped notes per lesson that jump to that moment in the video.
